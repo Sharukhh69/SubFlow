@@ -24,14 +24,14 @@ export const CatalogPage: React.FC = () => {
   // Product modal state
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [prodName, setProdName] = useState('');
-  const [prodSalesPrice, setProdSalesPrice] = useState(0);
-  const [prodCostPrice, setProdCostPrice] = useState(0);
+  const [prodSalesPrice, setProdSalesPrice] = useState<string>('');
+  const [prodCostPrice, setProdCostPrice] = useState<string>('');
   const [prodType, setProdType] = useState('SERVICE');
 
   // Plan modal state
   const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
   const [planName, setPlanName] = useState('');
-  const [planPrice, setPlanPrice] = useState(0);
+  const [planPrice, setPlanPrice] = useState<string>('');
   const [planPeriod, setPlanPeriod] = useState<BillingPeriod>(BillingPeriod.MONTHLY);
   const [planPausable, setPlanPausable] = useState(true);
   const [planClosable, setPlanClosable] = useState(true);
@@ -65,8 +65,8 @@ export const CatalogPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['catalog', 'products'] });
       setIsProductModalOpen(false);
       setProdName('');
-      setProdSalesPrice(0);
-      setProdCostPrice(0);
+      setProdSalesPrice('');
+      setProdCostPrice('');
     },
     onError: (err: any) => {
       const msg = err.response?.data?.message || 'Failed to create product.';
@@ -82,7 +82,7 @@ export const CatalogPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['catalog', 'plans'] });
       setIsPlanModalOpen(false);
       setPlanName('');
-      setPlanPrice(0);
+      setPlanPrice('');
     },
     onError: (err: any) => {
       const msg = err.response?.data?.message || 'Failed to create plan.';
@@ -402,15 +402,19 @@ export const CatalogPage: React.FC = () => {
             <Input
               label="Sales Price (₹) *"
               type="number"
+              step="0.01"
+              placeholder="0.00"
               value={prodSalesPrice}
-              onChange={(e) => setProdSalesPrice(parseFloat(e.target.value) || 0)}
+              onChange={(e) => setProdSalesPrice(e.target.value)}
               required
             />
             <Input
               label="Cost Price (₹)"
               type="number"
+              step="0.01"
+              placeholder="0.00"
               value={prodCostPrice}
-              onChange={(e) => setProdCostPrice(parseFloat(e.target.value) || 0)}
+              onChange={(e) => setProdCostPrice(e.target.value)}
             />
           </div>
 
@@ -480,8 +484,10 @@ export const CatalogPage: React.FC = () => {
             <Input
               label="Base Recurring Price (₹) *"
               type="number"
+              step="0.01"
+              placeholder="0.00"
               value={planPrice}
-              onChange={(e) => setPlanPrice(parseFloat(e.target.value) || 0)}
+              onChange={(e) => setPlanPrice(e.target.value)}
               required
             />
             <div className="input-group">
