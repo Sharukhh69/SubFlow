@@ -15,9 +15,12 @@ import {
   SubscriptionStatus,
   PaymentTerms,
   BillingPeriod,
+  DiscountScope,
+  DiscountType,
   Prisma,
 } from '@prisma/client';
 import { PaginatedResult, SortOrder } from '../common/dto/pagination.dto';
+import { DiscountEvaluatorService } from '../discounts/discount-evaluator.service';
 
 @Injectable()
 export class InvoicesService {
@@ -25,6 +28,7 @@ export class InvoicesService {
     private readonly prisma: PrismaService,
     private readonly sequencesService: SequencesService,
     private readonly taxCalculationService: TaxCalculationService,
+    private readonly discountEvaluatorService: DiscountEvaluatorService,
   ) {}
 
   /**
@@ -117,15 +121,77 @@ export class InvoicesService {
     const snapshotCustomerEmail = customer.user.email;
     const snapshotCustomerAddress = this.formatSnapshotAddress(customer);
 
-    // 3. Process lines with Tax Calculation
+    // 3. Process lines with Tax Calculation & Promotional Discounts
     const calculatedLines: CalculatedLine[] = [];
     const lineWrites: Prisma.InvoiceLineCreateWithoutInvoiceInput[] = [];
 
+    // Query active promotional discounts
+    let activeDiscounts: any[] = [];
+    try {
+      if (this.prisma.discount) {
+        activeDiscounts = await this.prisma.discount.findMany({
+          where: { isActive: true },
+          include: { products: true },
+        });
+      }
+    } catch {
+      activeDiscounts = [];
+    }
+
+    const rawSubtotal = subscription.lines.reduce(
+      (sum: number, l: any) => sum + Number(l.unitPrice) * l.quantity,
+      0,
+    );
+
+    const evaluatorLines = subscription.lines.map((subLine: any) => ({
+      productId: subLine.productId,
+      quantity: subLine.quantity,
+      unitPrice: Number(subLine.unitPrice),
+    }));
+
+    const evaluation = this.discountEvaluatorService.evaluateBestDiscount(
+      activeDiscounts,
+      rawSubtotal,
+      evaluatorLines,
+      new Date(),
+    );
+
+    const bestDiscount = evaluation.bestDiscount;
+    const discountAmount = evaluation.discountAmount;
+
     for (const subLine of subscription.lines) {
+      let lineDiscount = 0;
+      if (bestDiscount) {
+        const lineBase = Number(subLine.unitPrice) * subLine.quantity;
+        if (
+          bestDiscount.scope === DiscountScope.SPECIFIC_PRODUCTS &&
+          subLine.productId &&
+          bestDiscount.products.some((p: any) => p.productId === subLine.productId)
+        ) {
+          if (bestDiscount.type === DiscountType.PERCENTAGE) {
+            lineDiscount = this.taxCalculationService.round(
+              lineBase * (Number(bestDiscount.value) / 100),
+            );
+          } else if (bestDiscount.type === DiscountType.FIXED) {
+            lineDiscount = Math.min(lineBase, Number(bestDiscount.value));
+          }
+        } else if (bestDiscount.scope === DiscountScope.WHOLE_SUBSCRIPTION) {
+          if (bestDiscount.type === DiscountType.PERCENTAGE) {
+            lineDiscount = this.taxCalculationService.round(
+              lineBase * (Number(bestDiscount.value) / 100),
+            );
+          } else if (bestDiscount.type === DiscountType.FIXED && rawSubtotal > 0) {
+            lineDiscount = this.taxCalculationService.round(
+              (lineBase / rawSubtotal) * Number(bestDiscount.value),
+            );
+          }
+        }
+      }
+
       const calc = this.taxCalculationService.calculateLine(
         Number(subLine.unitPrice),
         subLine.quantity,
-        0, // discount default
+        lineDiscount,
         subLine.tax,
       );
       calculatedLines.push(calc);
@@ -151,6 +217,8 @@ export class InvoicesService {
 
     // 4. Totals Calculation
     const totals = this.taxCalculationService.calculateTotals(calculatedLines);
+    const finalDiscountTotal = totals.discountTotal;
+    const finalGrandTotal = totals.grandTotal;
 
     // 5. Sequence Numbering & Due Date
     const number = await this.sequencesService.getNextInvoiceNumber();
@@ -171,9 +239,9 @@ export class InvoicesService {
         issueDate,
         dueDate,
         subtotal: new Prisma.Decimal(totals.subtotal),
-        discountTotal: new Prisma.Decimal(totals.discountTotal),
+        discountTotal: new Prisma.Decimal(finalDiscountTotal),
         taxTotal: new Prisma.Decimal(totals.taxTotal),
-        grandTotal: new Prisma.Decimal(totals.grandTotal),
+        grandTotal: new Prisma.Decimal(finalGrandTotal),
         status: InvoiceStatus.DRAFT,
         lines: {
           create: lineWrites,
@@ -189,6 +257,29 @@ export class InvoicesService {
         subscription: true,
       },
     });
+
+    // Record Discount Redemption and update usage count atomically
+    if (bestDiscount && discountAmount > 0) {
+      try {
+        if (this.prisma.discountRedemption) {
+          await this.prisma.discountRedemption.create({
+            data: {
+              discountId: bestDiscount.id,
+              invoiceId: invoice.id,
+              amount: new Prisma.Decimal(discountAmount),
+            },
+          });
+        }
+        if (this.prisma.discount) {
+          await this.prisma.discount.update({
+            where: { id: bestDiscount.id },
+            data: { usedCount: { increment: 1 } },
+          });
+        }
+      } catch {
+        // Non-blocking redemption record
+      }
+    }
 
     // 7. Audit log (resilient)
     try {
@@ -380,6 +471,9 @@ export class InvoicesService {
           include: { plan: true },
         },
         payments: true,
+        discountRedemptions: {
+          include: { discount: true },
+        },
       },
     });
 
@@ -593,3 +687,4 @@ export class InvoicesService {
 </html>`;
   }
 }
+

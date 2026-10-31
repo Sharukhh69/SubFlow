@@ -14,6 +14,9 @@ import { CustomersModule } from './customers/customers.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { BillingModule } from './billing/billing.module';
+import { DiscountsModule } from './discounts/discounts.module';
+import { PaymentsModule } from './payments/payments.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -39,6 +42,9 @@ import { BillingModule } from './billing/billing.module';
     SubscriptionsModule,
     InvoicesModule,
     BillingModule,
+    DiscountsModule,
+    PaymentsModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}
