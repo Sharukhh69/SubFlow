@@ -35,7 +35,7 @@ export const SubscriptionsPage: React.FC = () => {
   // Form state for creating from template
   const [templateId, setTemplateId] = useState('');
   const [customerId, setCustomerId] = useState('');
-  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [startDate, setStartDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [paymentTerms, setPaymentTerms] = useState<PaymentTerms>(PaymentTerms.NET_30);
 
   // Fetch Subscriptions

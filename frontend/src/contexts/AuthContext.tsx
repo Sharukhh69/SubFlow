@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { User, Role, LoginPayload, RegisterPayload } from '../types';
 import { authApi } from '../api/auth.api';
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -15,14 +15,16 @@ interface AuthContextType {
   refreshProfile: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
     const cached = localStorage.getItem('subflow_user');
     return cached ? JSON.parse(cached) : null;
   });
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(() => {
+    return !localStorage.getItem('subflow_user') && !!localStorage.getItem('subflow_access_token');
+  });
 
   const fetchCurrentUser = useCallback(async () => {
     const token = localStorage.getItem('subflow_access_token');
@@ -47,7 +49,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   useEffect(() => {
-    fetchCurrentUser();
+    let isMounted = true;
+    if (isMounted) {
+      fetchCurrentUser();
+    }
+    return () => {
+      isMounted = false;
+    };
   }, [fetchCurrentUser]);
 
   const login = async (credentials: LoginPayload): Promise<User> => {
@@ -106,10 +114,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export { useAuth } from './useAuth';

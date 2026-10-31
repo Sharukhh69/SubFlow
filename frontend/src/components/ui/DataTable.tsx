@@ -141,3 +141,4 @@ export function DataTable<T extends { id?: string | number }>({
     </div>
   );
 }
+

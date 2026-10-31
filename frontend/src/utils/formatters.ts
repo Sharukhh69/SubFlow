@@ -73,3 +73,4 @@ export const getInvoiceStatusVariant = (status: string) => {
       return 'secondary';
   }
 };
+

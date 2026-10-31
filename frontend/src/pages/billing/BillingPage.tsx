@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 export const BillingPage: React.FC = () => {
   const queryClient = useQueryClient();
   const [isDryRun, setIsDryRun] = useState(true);
-  const [targetDate, setTargetDate] = useState(new Date().toISOString().split('T')[0]);
+  const [targetDate, setTargetDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [lastResult, setLastResult] = useState<BillingRunResult | null>(null);
 
   // Fetch past billing runs

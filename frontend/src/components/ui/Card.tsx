@@ -12,3 +12,4 @@ export const Card: React.FC<CardProps> = ({ children, className = '', ...props }
     </div>
   );
 };
+
