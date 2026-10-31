@@ -101,3 +101,4 @@ export class InvoicesController {
     return this.invoicesService.renderPrintableHtml(id, user);
   }
 }
+

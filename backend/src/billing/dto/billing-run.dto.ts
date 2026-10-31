@@ -19,3 +19,4 @@ export class BillingRunDto {
   @IsDateString()
   targetDate?: string;
 }
+

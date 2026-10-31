@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { InvoicesService } from './invoices.service';
 import { TaxCalculationService } from './tax-calculation.service';
 import { SequencesService } from '../common/services/sequences.service';
+import { DiscountEvaluatorService } from '../discounts/discount-evaluator.service';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   NotFoundException,
@@ -74,6 +75,8 @@ describe('InvoicesService & TaxCalculationService', () => {
       },
       sequenceCounter: { upsert: vi.fn() },
       auditLog: { create: vi.fn() },
+      discount: { findMany: vi.fn().mockResolvedValue([]), update: vi.fn() },
+      discountRedemption: { create: vi.fn() },
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -81,6 +84,7 @@ describe('InvoicesService & TaxCalculationService', () => {
         InvoicesService,
         TaxCalculationService,
         SequencesService,
+        DiscountEvaluatorService,
         { provide: PrismaService, useValue: prisma },
       ],
     }).compile();
@@ -300,3 +304,4 @@ describe('InvoicesService & TaxCalculationService', () => {
     });
   });
 });
+

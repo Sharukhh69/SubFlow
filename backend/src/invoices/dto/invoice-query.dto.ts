@@ -29,3 +29,4 @@ export class InvoiceQueryDto extends PaginationDto {
   @IsDateString()
   toIssueDate?: string;
 }
+
