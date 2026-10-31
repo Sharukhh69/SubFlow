@@ -386,7 +386,6 @@ export const CatalogPage: React.FC = () => {
               salesPrice: Number(prodSalesPrice),
               costPrice: Number(prodCostPrice),
               type: prodType,
-              isActive: true,
             });
           }}
         >
@@ -426,8 +425,10 @@ export const CatalogPage: React.FC = () => {
               onChange={(e) => setProdType(e.target.value)}
             >
               <option value="SERVICE">Service</option>
-              <option value="CONSUMABLE">Consumable</option>
-              <option value="STORABLE">Storable Product</option>
+              <option value="SOFTWARE">Software / SaaS</option>
+              <option value="ADD_ON">Add-on Feature</option>
+              <option value="HARDWARE">Hardware</option>
+              <option value="OTHER">Other</option>
             </select>
           </div>
 
@@ -468,7 +469,6 @@ export const CatalogPage: React.FC = () => {
               renewable: true,
               autoClose: false,
               minQuantity: 1,
-              isActive: true,
             });
           }}
         >
