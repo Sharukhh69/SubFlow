@@ -57,7 +57,7 @@ export const subscriptionsApi = {
 
   transition: async (id: string, targetStatus: SubscriptionStatus, reason?: string): Promise<Subscription> => {
     const res = await apiClient.post<Subscription>(`/subscriptions/${id}/transition`, {
-      targetStatus,
+      status: targetStatus,
       reason,
     });
     return res.data;
