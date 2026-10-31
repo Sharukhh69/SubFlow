@@ -51,3 +51,4 @@ export class MrrReportDto {
   @ApiProperty({ example: '2026-10-31T10:00:00.000Z', description: 'Calculation timestamp' })
   generatedAt!: string;
 }
+
