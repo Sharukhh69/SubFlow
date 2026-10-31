@@ -12,7 +12,12 @@ export const catalogApi = {
   // Products
   getProducts: async (params?: { page?: number; limit?: number; search?: string; type?: string }): Promise<{ data: Product[]; meta: any }> => {
     const res = await apiClient.get('/products', { params });
-    return res.data;
+    const d = res.data;
+    const items = d.items || d.data || (Array.isArray(d) ? d : []);
+    return {
+      data: items,
+      meta: d.meta || { total: items.length, page: 1, limit: items.length, totalPages: 1 },
+    };
   },
 
   getProduct: async (id: string): Promise<Product> => {
@@ -28,8 +33,9 @@ export const catalogApi = {
   // Plans
   getPlans: async (params?: { onlyActive?: boolean }): Promise<Plan[]> => {
     const res = await apiClient.get('/plans', { params });
-    // In backend plans controller, findAll returns an array or object with data
-    return Array.isArray(res.data) ? res.data : (res.data as any).data || [];
+    const d = res.data;
+    if (Array.isArray(d)) return d;
+    return d.items || d.data || [];
   },
 
   getPlan: async (id: string): Promise<Plan> => {
@@ -45,13 +51,20 @@ export const catalogApi = {
   // Taxes
   getTaxes: async (onlyActive: boolean = true): Promise<Tax[]> => {
     const res = await apiClient.get('/taxes', { params: { onlyActive } });
-    return Array.isArray(res.data) ? res.data : (res.data as any).data || [];
+    const d = res.data;
+    if (Array.isArray(d)) return d;
+    return d.items || d.data || [];
   },
 
   // Discounts
   getDiscounts: async (params?: { page?: number; limit?: number; isActive?: boolean }): Promise<{ data: Discount[]; meta: any }> => {
     const res = await apiClient.get('/discounts', { params });
-    return res.data;
+    const d = res.data;
+    const items = d.data || d.items || (Array.isArray(d) ? d : []);
+    return {
+      data: items,
+      meta: d.meta || { total: items.length, page: 1, limit: items.length, totalPages: 1 },
+    };
   },
 
   createDiscount: async (data: Partial<Discount>): Promise<Discount> => {
@@ -62,13 +75,23 @@ export const catalogApi = {
   // Quotation Templates
   getQuotationTemplates: async (params?: { page?: number; limit?: number }): Promise<{ data: QuotationTemplate[]; meta: any }> => {
     const res = await apiClient.get('/quotation-templates', { params });
-    return res.data;
+    const d = res.data;
+    const items = d.items || d.data || (Array.isArray(d) ? d : []);
+    return {
+      data: items,
+      meta: d.meta || { total: items.length, page: 1, limit: items.length, totalPages: 1 },
+    };
   },
 
   // Customers
   getCustomers: async (params?: { page?: number; limit?: number; search?: string }): Promise<{ data: CustomerProfile[]; meta: any }> => {
     const res = await apiClient.get('/customers', { params });
-    return res.data;
+    const d = res.data;
+    const items = d.items || d.data || (Array.isArray(d) ? d : []);
+    return {
+      data: items,
+      meta: d.meta || { total: items.length, page: 1, limit: items.length, totalPages: 1 },
+    };
   },
 
   getMyProfile: async (): Promise<CustomerProfile> => {
@@ -81,4 +104,3 @@ export const catalogApi = {
     return res.data;
   },
 };
-

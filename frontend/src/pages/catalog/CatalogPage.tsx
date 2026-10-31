@@ -339,7 +339,7 @@ export const CatalogPage: React.FC = () => {
       {activeTab === 'products' && (
         <DataTable
           columns={productColumns}
-          data={productsData?.data || []}
+          data={productsData?.data || (productsData as any)?.items || []}
           isLoading={isProductsLoading}
           emptyMessage="No products configured yet."
         />
@@ -366,7 +366,7 @@ export const CatalogPage: React.FC = () => {
       {activeTab === 'discounts' && (
         <DataTable
           columns={discountColumns}
-          data={discountsData?.data || []}
+          data={discountsData?.data || (discountsData as any)?.items || []}
           isLoading={isDiscountsLoading}
           emptyMessage="No discount rules active."
         />

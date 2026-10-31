@@ -22,8 +22,13 @@ export interface InvoicesResponse {
 
 export const invoicesApi = {
   getAll: async (params?: InvoiceFilters): Promise<InvoicesResponse> => {
-    const res = await apiClient.get<InvoicesResponse>('/invoices', { params });
-    return res.data;
+    const res = await apiClient.get('/invoices', { params });
+    const d = res.data;
+    const items = d.data || d.items || (Array.isArray(d) ? d : []);
+    return {
+      data: items,
+      meta: d.meta || { total: items.length, page: 1, limit: items.length, totalPages: 1 },
+    };
   },
 
   getById: async (id: string): Promise<Invoice> => {
@@ -54,4 +59,3 @@ export const invoicesApi = {
     return res.data;
   },
 };
-
