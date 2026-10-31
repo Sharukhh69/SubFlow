@@ -50,9 +50,9 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const handleDemoFill = (demoEmail: string, demoRole: string) => {
+  const handleDemoFill = (demoEmail: string, demoPassword: string, demoRole: string) => {
     setEmail(demoEmail);
-    setPassword('Password123!');
+    setPassword(demoPassword);
     setError(null);
     toast.info(`Filled credentials for ${demoRole}`);
   };
@@ -117,7 +117,7 @@ export const LoginPage: React.FC = () => {
             <Input
               label="Email Address"
               type="email"
-              placeholder="admin@subflow.io"
+              placeholder="admin@brightloop.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -163,7 +163,7 @@ export const LoginPage: React.FC = () => {
                 type="button"
                 className="btn btn-secondary"
                 style={{ fontSize: '0.75rem', padding: '6px 8px', flexDirection: 'column', gap: 4 }}
-                onClick={() => handleDemoFill('admin@subflow.io', 'Admin')}
+                onClick={() => handleDemoFill('admin@brightloop.com', 'Admin@12345', 'Admin')}
               >
                 <Shield size={14} color="#f87171" />
                 <span>Admin</span>
@@ -172,7 +172,7 @@ export const LoginPage: React.FC = () => {
                 type="button"
                 className="btn btn-secondary"
                 style={{ fontSize: '0.75rem', padding: '6px 8px', flexDirection: 'column', gap: 4 }}
-                onClick={() => handleDemoFill('staff@subflow.io', 'Staff')}
+                onClick={() => handleDemoFill('staff@brightloop.com', 'Staff@12345', 'Staff')}
               >
                 <Users size={14} color="#818cf8" />
                 <span>Staff</span>
@@ -181,7 +181,7 @@ export const LoginPage: React.FC = () => {
                 type="button"
                 className="btn btn-secondary"
                 style={{ fontSize: '0.75rem', padding: '6px 8px', flexDirection: 'column', gap: 4 }}
-                onClick={() => handleDemoFill('alice@customer.com', 'Customer')}
+                onClick={() => handleDemoFill('alice@customer.com', 'Password123!', 'Customer')}
               >
                 <User size={14} color="#34d399" />
                 <span>Customer</span>
