@@ -1,6 +1,7 @@
 # SubFlow — Subscription Management System
 
 > **By Brightloop Software** — The complete platform for running a subscription business end-to-end.
+> 📘 **New Developer or Agent Handover?** Read the [HANDOVER_GUIDE.md](./HANDOVER_GUIDE.md) for 5-minute setup instructions, .env configuration, test credentials, and architecture overview.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 

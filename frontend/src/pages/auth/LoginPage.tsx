@@ -172,7 +172,7 @@ export const LoginPage: React.FC = () => {
                 type="button"
                 className="btn btn-secondary"
                 style={{ fontSize: '0.75rem', padding: '6px 8px', flexDirection: 'column', gap: 4 }}
-                onClick={() => handleDemoFill('staff@brightloop.com', 'Staff@12345', 'Staff')}
+                onClick={() => handleDemoFill('staff1@brightloop.com', 'Staff@12345', 'Staff')}
               >
                 <Users size={14} color="#818cf8" />
                 <span>Staff</span>
@@ -181,7 +181,7 @@ export const LoginPage: React.FC = () => {
                 type="button"
                 className="btn btn-secondary"
                 style={{ fontSize: '0.75rem', padding: '6px 8px', flexDirection: 'column', gap: 4 }}
-                onClick={() => handleDemoFill('alice@customer.com', 'Password123!', 'Customer')}
+                onClick={() => handleDemoFill('rohithkarthik275@gmail.com', 'Rohith@13012007', 'Customer')}
               >
                 <User size={14} color="#34d399" />
                 <span>Customer</span>
