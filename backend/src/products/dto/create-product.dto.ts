@@ -50,3 +50,4 @@ export class CreateProductDto {
   @Type(() => CreateVariantDto)
   variants?: CreateVariantDto[];
 }
+

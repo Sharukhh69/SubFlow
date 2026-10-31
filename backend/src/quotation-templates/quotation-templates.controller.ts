@@ -65,3 +65,4 @@ export class QuotationTemplatesController {
     return this.templatesService.archiveTemplate(id);
   }
 }
+

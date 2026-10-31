@@ -50,3 +50,4 @@ export class CreateQuotationTemplateDto {
   @Type(() => CreateTemplateLineDto)
   lines!: CreateTemplateLineDto[];
 }
+

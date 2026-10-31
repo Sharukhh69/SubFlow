@@ -74,3 +74,4 @@ export class PlansController {
     return this.plansService.archivePlan(id);
   }
 }
+

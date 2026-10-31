@@ -69,3 +69,4 @@ export class UpdatePlanDto {
   @IsBoolean()
   renewable?: boolean;
 }
+

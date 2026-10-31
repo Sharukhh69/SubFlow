@@ -17,3 +17,4 @@ export class CreateTaxDto {
   @Min(0)
   rate!: number;
 }
+

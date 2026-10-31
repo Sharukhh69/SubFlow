@@ -24,3 +24,4 @@ export class UpdateTaxDto {
   @IsBoolean()
   isActive?: boolean;
 }
+

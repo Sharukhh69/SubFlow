@@ -71,3 +71,4 @@ export class TaxesService {
     return { message: 'Tax rule deleted permanently' };
   }
 }
+

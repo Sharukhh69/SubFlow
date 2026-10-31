@@ -10,3 +10,4 @@ import { QuotationTemplatesController } from './quotation-templates.controller';
   exports: [QuotationTemplatesService],
 })
 export class QuotationTemplatesModule {}
+

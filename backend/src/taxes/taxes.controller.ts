@@ -64,3 +64,4 @@ export class TaxesController {
     return this.taxesService.archiveTax(id);
   }
 }
+

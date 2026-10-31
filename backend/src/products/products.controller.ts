@@ -81,3 +81,4 @@ export class ProductsController {
     return this.productsService.updateVariant(variantId, dto);
   }
 }
+

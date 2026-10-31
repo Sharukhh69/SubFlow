@@ -10,6 +10,7 @@ import { TaxesModule } from './taxes/taxes.module';
 import { ProductsModule } from './products/products.module';
 import { PlansModule } from './plans/plans.module';
 import { QuotationTemplatesModule } from './quotation-templates/quotation-templates.module';
+import { CustomersModule } from './customers/customers.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { QuotationTemplatesModule } from './quotation-templates/quotation-templa
     ProductsModule,
     PlansModule,
     QuotationTemplatesModule,
+    CustomersModule,
   ],
 })
 export class AppModule {}

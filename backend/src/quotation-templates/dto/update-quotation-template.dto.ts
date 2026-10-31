@@ -40,3 +40,4 @@ export class UpdateQuotationTemplateDto {
   @Type(() => CreateTemplateLineDto)
   lines?: CreateTemplateLineDto[];
 }
+
