@@ -2,6 +2,8 @@
 node_modules/
 dist/
 .env
+.env.*
+!.env.example
 
 # Build artifacts
 *.tsbuildinfo
@@ -20,3 +22,8 @@ Thumbs.db
 
 # Test coverage
 coverage/
+
+# Local agents, skills & private data
+.agents/
+skills-lock.json
+data/
