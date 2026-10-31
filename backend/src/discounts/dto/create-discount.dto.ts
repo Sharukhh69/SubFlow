@@ -77,3 +77,4 @@ export class CreateDiscountDto {
   @IsBoolean()
   isActive?: boolean = true;
 }
+

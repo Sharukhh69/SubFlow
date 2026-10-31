@@ -29,3 +29,4 @@ export class PaymentQueryDto extends PaginationDto {
   @IsDateString()
   endDate?: string;
 }
+
