@@ -12,6 +12,8 @@ import { PlansModule } from './plans/plans.module';
 import { QuotationTemplatesModule } from './quotation-templates/quotation-templates.module';
 import { CustomersModule } from './customers/customers.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { InvoicesModule } from './invoices/invoices.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
     QuotationTemplatesModule,
     CustomersModule,
     SubscriptionsModule,
+    InvoicesModule,
+    BillingModule,
   ],
 })
 export class AppModule {}

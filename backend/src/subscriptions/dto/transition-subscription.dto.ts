@@ -20,3 +20,4 @@ export class TransitionSubscriptionDto {
   @IsString()
   reason?: string;
 }
+

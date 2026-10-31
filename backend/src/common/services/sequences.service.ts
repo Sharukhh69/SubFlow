@@ -38,4 +38,12 @@ export class SequencesService {
   async getNextSubscriptionNumber(): Promise<string> {
     return this.getNextSequence('subscription', 'SUB', 5);
   }
+
+  /**
+   * Convenience helper for Invoice sequential numbering
+   */
+  async getNextInvoiceNumber(): Promise<string> {
+    return this.getNextSequence('invoice', 'INV', 5);
+  }
 }
+

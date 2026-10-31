@@ -27,3 +27,4 @@ export class CreateSubscriptionFromTemplateDto {
   @IsString()
   notes?: string;
 }
+

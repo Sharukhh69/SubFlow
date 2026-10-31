@@ -23,3 +23,4 @@ export class UpdateSubscriptionDto {
   @IsString()
   notes?: string;
 }
+

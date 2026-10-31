@@ -19,3 +19,4 @@ export class SubscriptionQueryDto extends PaginationDto {
   @IsString()
   planId?: string;
 }
+

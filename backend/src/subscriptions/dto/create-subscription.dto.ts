@@ -79,3 +79,4 @@ export class CreateSubscriptionDto {
   @Type(() => CreateSubscriptionLineDto)
   lines: CreateSubscriptionLineDto[];
 }
+
