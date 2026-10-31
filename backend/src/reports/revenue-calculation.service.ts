@@ -72,3 +72,4 @@ export class RevenueCalculationService {
     return { bucket: '90+', label: '90+ Days' };
   }
 }
+

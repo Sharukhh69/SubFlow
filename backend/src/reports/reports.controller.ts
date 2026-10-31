@@ -74,3 +74,4 @@ export class ReportsController {
     return this.reportsService.getRevenueTrend(isNaN(monthsCount) ? 6 : monthsCount);
   }
 }
+

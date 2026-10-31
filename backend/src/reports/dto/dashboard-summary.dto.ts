@@ -25,3 +25,4 @@ export class DashboardSummaryDto {
   @ApiProperty({ example: false, description: 'Whether this response was served from in-memory cache' })
   isCached!: boolean;
 }
+

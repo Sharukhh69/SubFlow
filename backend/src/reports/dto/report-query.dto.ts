@@ -17,3 +17,4 @@ export class ReportQueryDto {
   @IsString()
   planId?: string;
 }
+
