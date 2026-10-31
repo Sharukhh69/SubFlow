@@ -18,3 +18,4 @@ export class CustomerQueryDto extends PaginationDto {
   @IsString()
   state?: string;
 }
+

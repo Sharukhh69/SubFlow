@@ -47,3 +47,4 @@ export class UpdateCustomerDto {
   @IsString()
   gstin?: string;
 }
+
